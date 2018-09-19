@@ -12,7 +12,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " commands
-command! -nargs=+ QiitaPy call qiitapy#qiitapy(<f-args>)
+command! -nargs=+ -complete=customlist,qiitapy#command_list QiitaPy call qiitapy#qiitapy(<f-args>)
 
 " restore user setting
 let &cpo = s:save_cpo

@@ -15,9 +15,13 @@ python3 import sys
 python3 sys.path.append(vim.eval('expand("<sfile>:h:h")') + "/src/python3")
 py3file <sfile>:h:h/src/python3/qiitapy.py
 
-function qiitapy#qiitapy(...)
+function! qiitapy#qiitapy(...)
     let option = (a:0 >= 2) ? a:000[1:] : []
     python3 qiitaPy(vim.eval("a:1"), vim.eval("option"))
+endfunction
+
+function! qiitapy#command_list(lead, line, pos)
+    return ["config", "post", "list", "edit"]
 endfunction
 
 " restore user setting

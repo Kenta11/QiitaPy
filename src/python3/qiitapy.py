@@ -146,7 +146,9 @@ def qiitaPyEdit(page):
         return
 
     # move to window with new buffer
-    if vim.current.buffer.name != "" or\
+    if not vim.current.buffer.options["modified"]:
+        vim.command("enew")
+    elif vim.current.buffer.name != "" or\
        len(vim.current.buffer) != 1 or\
        vim.current.buffer.options["modified"]:
            vim.command("tabnew")
