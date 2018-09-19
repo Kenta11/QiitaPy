@@ -4,6 +4,7 @@
 import sys
 import os
 import vim
+import yaml
 from getpass import getpass
 
 from qiita_v2.client import QiitaClient
@@ -11,30 +12,49 @@ from qiita_v2.client import QiitaClient
 from qiitaPyError import QiitaPyCommandError
 from parseVimBuffer import getArticle
 
-POST_SUCCESS    = 200
 GET_SUCCESS     = 200
+UPDATE_SUCCESS  = 200
+POST_SUCCESS    = 201
 
 config_file_path = os.path.expanduser("~/.qiita-py.yaml")
 client = None
 window_name = "Qiita-articles"
+USER_NAME = None
+"""
+key: pseudo-id
+item: {title, body, id, tags}
+"""
+article_dict = {}
 
-def qiitaPy(command, option):
+def qiitaPy(command, option = []):
     if command == "config":
         qiitaPyConfig()
     elif command == "post":
-        qiitaPyPost()
-    elif command == "edit":
-        qiitaPyEdit()
-    elif command == "list":
-        print(option)
-        if len(option) > 0:
-            name = option[0]
-            page = int(option[1]) if len(option) > 1 else 1
-            qiitaPyList(name = name, page = page)
+        if option:
+            qiitaPyPost(mode = option[0])
         else:
-            sys.stderr.write("List needs user name.\n")
-    elif command == "delete":
-        qiitaPyDelete()
+            qiitaPyPost()
+    elif command == "list":
+        name = None
+        global USER_NAME
+        if option != []:
+            name = option[0]
+        elif not USER_NAME:
+            name = USER_NAME
+        else:
+            f = open(config_file_path, "r")
+            config = yaml.load(f)
+
+            if "USER_NAME" in config:
+                name = config["USER_NAME"]
+            else:
+                sys.stderr.write("name is needed.\n")
+                return
+
+            f.close()
+
+        page = int(option[1]) if len(option) > 1 else 1
+        qiitaPyList(name = name, page = page)
     else:
         raise QiitaPyCommandError(command)
 
@@ -46,7 +66,7 @@ def qiitaPyConfig():
     if vim.current.buffer[0] == "":
         vim.current.buffer[0] = "ACCESS_TOKEN: "
 
-def qiitaPyPost():
+def qiitaPyPost(mode = ""):
     # get an article from current buffer
     data = getArticle()
 
@@ -62,13 +82,47 @@ def qiitaPyPost():
         "tweet": data["tweet"]\
     }
 
-    # send the article
     client = qiitaPyGetClient()
-    response = client.create_item(params)
 
-    # check status code
-    if response.status == POST_SUCCESS:
-        print("Posting success!")
+    if mode == "new":
+        # send the article
+        response = client.create_item(params)
+        # check status code
+        if response.status == POST_SUCCESS:
+            print("Posting success!")
+    else:
+        pseudo_id = -1
+        try:
+            pseudo_id = int(vim.command("input('pseudo article id: ')"))
+        except:
+            sys.stderr.write("ERROR: Enter pseudo id in the article list")
+            return
+            
+        article_id = "-1"
+        global article_dict
+        for key in article_dict.keys():
+            if key == pseudo_id :
+                ret = vim.command("old title: {} ?<y/n>".format(article_dict[key]["title"]))
+                if ret == "y":
+                    article_id = article_dict[key]["article_id"]
+                    break
+                elif ret == "n":
+                    sys.stderr.write("Posting was failed.")
+                    return
+                else:
+                    sys.stderr.write("Enter 'y' or 'n'.")
+                    return
+        else:
+            sys.stderr("pseudo-id {} was not found.".format(pseudo_id))
+            return
+
+        # update the article
+        response = client.update_item(article_id, params)
+
+        # check status code
+        if response.status == UPDATE_SUCCESS:
+            print("Posting success!")
+            article_dict[pseudo_id] = {"title": params["title"], "body": params["body"], "article_id": article_id, "tags": params["tags"]}
 
 def qiitaPyEdit():
     print("Under Construction...")
@@ -115,17 +169,30 @@ def qiitaPyList(name = "", page = 1):
         sys.stderr.write("ERROR: status code {}".format(response.status))
         return
 
+    global article_dict
+    article_dict = {}
+    for idx, item in enumerate(response.to_json()):
+        article_dict[(page - 1) * 20 + idx + 1] = {\
+            "title":      item["title"],\
+            "body":       item["body"],\
+            "article_id": item["id"],\
+            "tags":       item["tags"]\
+        }
+
     # show the list
     print("Listing articles...")
     title_list = [item["title"] for item in response.to_json()]
+    window_width = 0
+    for win in vim.windows:
+        window_width += win.width
+    vim.current.window.width = window_width / 4
     vim.current.buffer[0] = "page: {}".format(page)
-    vim.current.buffer[:] = ["{}: {}".format(idx, title) for idx, title in enumerate(title_list)]
+    vim.current.buffer.append("pseudo_id: title")
+    vim.current.buffer.append("")
+    vim.current.buffer[2:] = ["{}: {}".format((page - 1) * 20 + idx + 1, title) for idx, title in enumerate(title_list)]
 
     vim.current.buffer.options["modifiable"] = False
     vim.current.buffer.options["modified"] = False
-
-def qiitaPyDelete():
-    print("Under Construction...")
 
 def qiitaPyGetClient():
     global client
