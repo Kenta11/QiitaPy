@@ -117,8 +117,7 @@ def qiitaPyList(name = "", page = 1):
 
     # show the list
     print("Listing articles...")
-    # title_list = [item["title"] for item in response.to_json()]
-    title_list = ["aaa", "bbb", "ccc"]
+    title_list = [item["title"] for item in response.to_json()]
     vim.current.buffer[0] = "page: {}".format(page)
     vim.current.buffer[:] = ["{}: {}".format(idx, title) for idx, title in enumerate(title_list)]
 
