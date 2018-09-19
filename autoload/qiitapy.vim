@@ -12,12 +12,12 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 python3 import sys
-python3 import vim
 python3 sys.path.append(vim.eval('expand("<sfile>:h:h")') + "/src/python3")
 py3file <sfile>:h:h/src/python3/qiitapy.py
 
-function qiitapy#qiitapy(command)
-    python3 qiitaPy(vim.eval("a:command"))
+function qiitapy#qiitapy(...)
+    let option = (a:0 >= 2) ? a:000[1:] : []
+    python3 qiitaPy(vim.eval("a:1"), vim.eval("option"))
 endfunction
 
 " restore user setting
