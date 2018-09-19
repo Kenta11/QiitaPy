@@ -54,7 +54,20 @@ def qiitaPy(command, option = []):
             f.close()
 
         page = int(option[1]) if len(option) > 1 else 1
+
         qiitaPyList(name = name, page = page)
+    elif command == "edit":
+        page = -1
+        try:
+            page = int(option[0])
+        except IndexError:
+            sys.stderr.write("pseudo_id is needed.\n")
+            return
+        except ValueError:
+            sys.stderr.write("Argument must be an integer")
+            return
+
+        qiitaPyEdit(page)
     else:
         raise QiitaPyCommandError(command)
 
@@ -65,6 +78,7 @@ def qiitaPyConfig():
     # if not written in current buffer, write "ACCESS_TOKEN: "
     if vim.current.buffer[0] == "":
         vim.current.buffer[0] = "ACCESS_TOKEN: "
+        vim.current.buffer.append("USER_NAME: ")
 
 def qiitaPyPost(mode = ""):
     # get an article from current buffer
@@ -124,8 +138,38 @@ def qiitaPyPost(mode = ""):
             print("Posting success!")
             article_dict[pseudo_id] = {"title": params["title"], "body": params["body"], "article_id": article_id, "tags": params["tags"]}
 
-def qiitaPyEdit():
-    print("Under Construction...")
+def qiitaPyEdit(page):
+    # check pseudo_id in article_dict
+    global article_dict
+    if page not in article_dict.keys():
+        sys.stderr.write("pseudo_id {} was not found in the list.".format(page))
+        return
+
+    # move to window with new buffer
+    if vim.current.buffer.name != "" or\
+       len(vim.current.buffer) != 1 or\
+       vim.current.buffer.options["modified"]:
+           vim.command("tabnew")
+
+    # display the article
+    ## params
+    vim.current.buffer[0] = "---"
+
+    ### title
+    vim.current.buffer.append("title: {}".format(article_dict[page]["title"]))
+
+    ### tags
+    vim.current.buffer.append("tags:")
+    for tag in article_dict[page]["tags"]:
+        vim.current.buffer.append(\
+            "    - {}: {}".format(tag["name"], tag["versions"] if tag["versions"] != [] else "")\
+        )
+
+    vim.current.buffer.append("---")
+
+    ## body
+    for line in article_dict[page]["body"].split("\n"):
+        vim.current.buffer.append(line)
 
 def qiitaPyList(name = "", page = 1):
     # if page < 1, send exception
@@ -193,6 +237,12 @@ def qiitaPyList(name = "", page = 1):
 
     vim.current.buffer.options["modifiable"] = False
     vim.current.buffer.options["modified"] = False
+    vim.current.buffer.options["buftype"] = b"nofile"
+
+    vim.command("let b:QiitaPy= ''")
+
+    # move to window which one before
+    vim.command("wincmd l")
 
 def qiitaPyGetClient():
     global client
