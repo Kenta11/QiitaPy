@@ -46,7 +46,7 @@ def getArticle():
 
     # set tweet
     if "tweet" not in data or type(data["tweet"]) is not bool:
-        raise QiitaPyNoItem("tweet")
+        data["tweet"] = False
 
     return data
 
