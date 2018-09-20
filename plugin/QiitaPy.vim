@@ -2,17 +2,17 @@
 scriptencoding utf-8
 
 " load control
-if exists('g:loaded_qiitapy')
+if exists('g:loaded_QiitaPy')
     finish
 endif
-let g:loaded_qiitapy = 1
+let g:loaded_QiitaPy = 1
 
 " evacuate user setting temporarily
 let s:save_cpo = &cpo
 set cpo&vim
 
 " commands
-command! -nargs=+ -complete=customlist,qiitapy#command_list QiitaPy call qiitapy#qiitapy(<f-args>)
+command! -nargs=+ -complete=customlist,QiitaPy#commandList QiitaPy call QiitaPy#QiitaPy(<f-args>)
 
 " restore user setting
 let &cpo = s:save_cpo
