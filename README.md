@@ -40,7 +40,7 @@ Then, close the Vim.
 ```
 :QiitaPy config
 ```
-![image-config](img/config.png)
+![image-config](img/config.jpg)
 
 
 ### Write an article
@@ -51,7 +51,7 @@ You can write title and tags in it.
 ```
 :QiitaPy template
 ```
-![image-template](img/template.png)
+![image-template](img/template.jpg)
 
 ### Post to Qiita!
 
@@ -60,10 +60,11 @@ If you are posting the article for the first time, add *new* option.
 ```
 :QiitaPy post new
 ```
-![image-template](img/post.png)
+![image-template](img/post.jpg)
 
 Check your page on Qiita!
-![image-template](img/Qiita.png)
+
+![image-template](img/Qiita.jpg)
 
 ## Licence
 
