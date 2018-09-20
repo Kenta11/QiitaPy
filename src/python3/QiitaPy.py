@@ -15,7 +15,7 @@ GET_SUCCESS     = 200
 UPDATE_SUCCESS  = 200
 POST_SUCCESS    = 201
 
-config_file_path = os.path.expanduser("~/.qiita-py.yaml")
+config_file_path = os.path.expanduser("~/.QiitaPy.yaml")
 client = None
 window_name = "Qiita-articles"
 USER_NAME = None
@@ -104,8 +104,8 @@ def qiitaPyPost(mode = ""):
     else:
         pseudo_id = -1
         try:
-            vim.command("let qiitaPy#pseudo_id = input('pseudo article id: ')")
-            pseudo_id = int(vim.eval("qiitaPy#pseudo_id"))
+            vim.command("let l:QiitaPy#pseudo_id = input('pseudo article id: ')")
+            pseudo_id = int(vim.eval("l:QiitaPy#pseudo_id"))
         except ValueError:
             sys.stderr.write("ERROR: Enter pseudo id in the article list")
             return
@@ -239,7 +239,7 @@ def qiitaPyList(name = "", page = 1):
     vim.current.buffer.options["modified"] = False
     vim.current.buffer.options["buftype"] = b"nofile"
 
-    vim.command("let b:QiitaPy= ''")
+    vim.command("let b:QiitaPy#listed= 1")
 
     # move to window which one before
     vim.command("wincmd l")

@@ -1,0 +1,99 @@
+*QiitaPy.txt* For Vim version 8.0 Last change: 2018 September 20
+
+Version: 0.1.0
+Author: Kenta Arai < Twitter: isKenta14>
+License: MIT license
+
+==============================================================================
+*CONTENS*
+
+Introduction        |QiitaPy-introduction|
+Install             |QiitaPy-install|
+Usage               |QiitaPy-usage|
+    config              |QiitaPy-config|
+    post                |QiitaPy-post|
+    list                |QiitaPy-list|
+    edit                |QiitaPy-edit|
+    template            |QiitaPy-template|
+Link                |QiitaPy-link|
+
+==============================================================================
+Introduction        *QiitaPy-introduction*
+
+QiitaPy is the plugin to post, edit and view articles. It's written in Python3.
+
+==============================================================================
+Install             *QiitaPy-install*
+
+QiitaPy needs the following environment.
+
+* Vim that can use Python3
+* several python module
+    - vim
+    - yaml
+    - qiita_py
+Note: These module can be installed by pip.
+
+==============================================================================
+Usage               *QiitaPy-usage*
+
+QiitaPy has several commands. If you use QiitaPy, QiitaPy needs one command,
+like git. For example, when using 'config' command, type the following.
+
+>
+ 	QiitaPy config
+<
+------------------------------------------------------------------------------
+config              *QiitaPy-config*
+
+Configure certification and user name. Configuration is written in ~/.QiitaPy.yaml.
+>
+ 	QiitaPy config
+<
+------------------------------------------------------------------------------
+post                *QiitaPy-post*
+
+Post an article in current bufer to Qiita. If the article hasn't been posted
+yet, add "new" option.
+>
+	QiitaPy post new
+<
+If updating the article, new option isn't required. But QiitaPy requires pseudo article id in a list showed by |QiitaPy-list|..
+
+------------------------------------------------------------------------------
+list                *QiitaPy-list*
+
+List articles that written by user "USER_NAME" (This is written in
+~/.QiitaPy.yaml). The list shows pseudo id and title. This pseudo id is needed
+in |QiitaPy-Post| and |QiitaPy-edit|.
+>
+ 	QiitaPy list
+<
+If you want to list anothor user's articles, add the user's name.
+>
+ 	QiitaPy list who
+<
+------------------------------------------------------------------------------
+edit                *QiitaPy-edit*
+
+Edit the article specified with pseudo id. This id can be checked using
+|QiitaPy-list|.
+>
+ 	QiitaPy edit id 
+<
+------------------------------------------------------------------------------
+template            *QiitaPy-template*
+
+Generate a template article. The template article is structured by yaml meta
+data block and article body.
+>
+>
+ 	QiitaPy template
+<
+==============================================================================
+Link                *QiitaPy-link*
+
+Comming soon...
+
+==============================================================================
+ vim:tw=78:ts=8:noet:ft=help:norl:
