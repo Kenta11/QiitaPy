@@ -1,8 +1,8 @@
-# Qiita-py
+# QiitaPy
 
 ---
 
-Qiita-py is the Vim plugin to edit articles on Qiita.
+QiitaPy is the Vim plugin to edit articles on Qiita.
 It's written in Python.
 
 ## Requirement
