@@ -30,10 +30,7 @@ def qiitaPy(command, option = []):
     if command == "config":
         qiitaPyConfig()
     elif command == "post":
-        if option:
-            qiitaPyPost(mode = option[0])
-        else:
-            qiitaPyPost()
+        qiitaPyPost(option[0] if len(option) else "")
     elif command == "list":
         name = None
         global USER_NAME
@@ -68,6 +65,8 @@ def qiitaPy(command, option = []):
             return
 
         qiitaPyEdit(page)
+    elif command == "template":
+        qiitaPyTemplate()
     else:
         raise QiitaPyCommandError(command)
 
@@ -77,8 +76,7 @@ def qiitaPyConfig():
     
     # if not written in current buffer, write "ACCESS_TOKEN: "
     if vim.current.buffer[0] == "":
-        vim.current.buffer[0] = "ACCESS_TOKEN: "
-        vim.current.buffer.append("USER_NAME: ")
+        vim.current.buffer[:] = ["ACCESS_TOKEN: ", "USER_NAME: "]
 
 def qiitaPyPost(mode = ""):
     # get an article from current buffer
@@ -107,8 +105,9 @@ def qiitaPyPost(mode = ""):
     else:
         pseudo_id = -1
         try:
-            pseudo_id = int(vim.command("input('pseudo article id: ')"))
-        except:
+            vim.command("let qiitaPy#pseudo_id = input('pseudo article id: ')")
+            pseudo_id = int(vim.eval("qiitaPy#pseudo_id"))
+        except ValueError:
             sys.stderr.write("ERROR: Enter pseudo id in the article list")
             return
             
@@ -127,7 +126,7 @@ def qiitaPyPost(mode = ""):
                     sys.stderr.write("Enter 'y' or 'n'.")
                     return
         else:
-            sys.stderr("pseudo-id {} was not found.".format(pseudo_id))
+            sys.stderr.write("pseudo-id {} was not found.".format(pseudo_id))
             return
 
         # update the article
@@ -245,6 +244,33 @@ def qiitaPyList(name = "", page = 1):
 
     # move to window which one before
     vim.command("wincmd l")
+
+def qiitaPyTemplate():
+    # move to window with new buffer
+    if not vim.current.buffer.options["modified"]:
+        vim.command("enew")
+    elif vim.current.buffer.name != "" or\
+       len(vim.current.buffer) != 1 or\
+       vim.current.buffer.options["modified"]:
+           vim.command("tabnew")
+
+    # generate template
+    article_template = []
+    article_template.append("---")
+
+    ## title
+    article_template.append("title: ")
+
+    ## tags
+    article_template.append("tags:")
+    article_template.append("    - ")
+
+    article_template.append("---")
+
+    ## body
+    article_template.append("")
+
+    vim.current.buffer[:] = article_template
 
 def qiitaPyGetClient():
     global client

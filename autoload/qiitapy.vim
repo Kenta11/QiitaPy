@@ -21,7 +21,7 @@ function! qiitapy#qiitapy(...)
 endfunction
 
 function! qiitapy#command_list(lead, line, pos)
-    return ["config", "post", "list", "edit"]
+    return ["config", "post", "list", "edit", "template"]
 endfunction
 
 " restore user setting
