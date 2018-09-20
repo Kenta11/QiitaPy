@@ -58,8 +58,10 @@ yet, add "new" option.
 >
 	QiitaPy post new
 <
-If updating the article, new option isn't required. But QiitaPy requires pseudo article id in a list showed by |QiitaPy-list|..
-
+If updating the article, new option isn't required. But QiitaPy requires pseudo article id in a list showed by |QiitaPy-list|.
+>
+ 	QiitaPy post
+<
 ------------------------------------------------------------------------------
 list                *QiitaPy-list*
 

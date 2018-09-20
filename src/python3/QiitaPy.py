@@ -104,8 +104,8 @@ def qiitaPyPost(mode = ""):
     else:
         pseudo_id = -1
         try:
-            vim.command("let l:QiitaPy#pseudo_id = input('pseudo article id: ')")
-            pseudo_id = int(vim.eval("l:QiitaPy#pseudo_id"))
+            vim.command("let l:pseudo_id = input('pseudo article id: ')")
+            pseudo_id = int(vim.eval("l:pseudo_id"))
         except ValueError:
             sys.stderr.write("ERROR: Enter pseudo id in the article list")
             return
@@ -239,7 +239,7 @@ def qiitaPyList(name = "", page = 1):
     vim.current.buffer.options["modified"] = False
     vim.current.buffer.options["buftype"] = b"nofile"
 
-    vim.command("let b:QiitaPy#listed= 1")
+    vim.command("let b:QiitaPy = 1")
 
     # move to window which one before
     vim.command("wincmd l")
@@ -262,7 +262,7 @@ def qiitaPyTemplate():
 
     ## tags
     article_template.append("tags:")
-    article_template.append("    - ")
+    article_template.append("    - :")
 
     article_template.append("---")
 
