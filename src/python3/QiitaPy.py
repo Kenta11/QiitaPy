@@ -5,7 +5,6 @@ import sys
 import os
 import vim
 import yaml
-from getpass import getpass
 
 from qiita_v2.client import QiitaClient
 
