@@ -15,6 +15,7 @@ Usage               |QiitaPy-usage|
     list                |QiitaPy-list|
     edit                |QiitaPy-edit|
     template            |QiitaPy-template|
+Article format      |QiitaPy-format|
 Link                |QiitaPy-link|
 
 ==============================================================================
@@ -92,6 +93,32 @@ data block and article body.
 >
  	QiitaPy template
 <
+==============================================================================
+Article format      *QiitaPy-format*
+
+Articles must follow QiitaPy format. QiitaPy format is expansion of
+markdown. The following is an exmple of an article.
+>
+	---
+	- title: Example title
+	- tags:
+	    - Vim: 8.1
+	    - Qiita:
+	- tweet: false
+	---
+	# What is QiitaPy?
+	...
+	## Vim
+	...
+
+	## Qiita
+	...
+<
+The top of the article is YAML meta data. It include title, tags, and tweet.
+Tags can be set version like "- Vim: 8.1". Tweet is an attribute to determine
+whether to tweet when posting an article.
+The bottom of the article is markdown. This is body of the article.
+
 ==============================================================================
 Link                *QiitaPy-link*
 
