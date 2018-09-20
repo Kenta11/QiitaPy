@@ -35,7 +35,7 @@ def qiitaPy(command, option = []):
         global USER_NAME
         if option != []:
             name = option[0]
-        elif not USER_NAME:
+        elif USER_NAME:
             name = USER_NAME
         else:
             f = open(config_file_path, "r")
@@ -114,7 +114,8 @@ def qiitaPyPost(mode = ""):
         global article_dict
         for key in article_dict.keys():
             if key == pseudo_id :
-                ret = vim.command("old title: {} ?<y/n>".format(article_dict[key]["title"]))
+                vim.command("let l:ret = input('previous title(y/n): {} ?')".format(article_dict[key]["title"]))
+                ret = vim.eval("l:ret")
                 if ret == "y":
                     article_id = article_dict[key]["article_id"]
                     break
