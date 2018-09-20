@@ -264,6 +264,9 @@ def qiitaPyTemplate():
     article_template.append("tags:")
     article_template.append("    - :")
 
+    ## tweet
+    article_template.append("tweet: false")
+
     article_template.append("---")
 
     ## body
