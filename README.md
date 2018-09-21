@@ -72,7 +72,7 @@ Check your page on Qiita!
 
 ## Link
 
-- [VimでQiitaの記事を投稿しよう！ ~QiitaPyの紹介~](https://qiita.com/Kenta11/items/04b2614e3f649117dc4d)
+- [VimでQiitaの記事を投稿しよう！ \~QiitaPyの紹介\~](https://qiita.com/Kenta11/items/04b2614e3f649117dc4d)
 
 ## Author
 
