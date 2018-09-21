@@ -10,7 +10,7 @@ It's written in Python.
 - environment
     - python3
 - python library
-    - vim
+    - yaml
     - [petitviolet/qiita\_py](https://github.com/petitviolet/qiita_py)
 
 ## Install
@@ -19,12 +19,12 @@ Write the following in .vimrc.
 
 - dein.vim:
 ```
-call dein#add('Kenta11/qiita-py')
+call dein#add('Kenta11/QiitaPy')
 ```
 
 - neubundle:
 ```
-NeoBundle 'Kenta11/qiita-py'
+NeoBundle 'Kenta11/QiitaPy'
 ```
 
 ## Easy tutorial
@@ -72,7 +72,7 @@ Check your page on Qiita!
 
 ## Link
 
-Comming soon...
+- [VimでQiitaの記事を投稿しよう！ ~QiitaPyの紹介~](https://qiita.com/Kenta11/items/04b2614e3f649117dc4d)
 
 ## Author
 
